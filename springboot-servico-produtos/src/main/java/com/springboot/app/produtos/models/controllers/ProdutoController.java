@@ -37,6 +37,7 @@ public class ProdutoController {
 	public Produto getProduto(@PathVariable Long id) {
 		Produto produto = produtoService.findByid(id);
 		produto.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+		
 		return produto;
 	}
 
