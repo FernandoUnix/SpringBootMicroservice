@@ -39,13 +39,13 @@ public class ProdutoController {
 		Produto produto = produtoService.findByid(id);
 		produto.setPort(Integer.parseInt(env.getProperty("local.server.port")));
 
-		// Para teste da configuração timeout do @HystrixCommand
-		// try {
-		// Thread.sleep(8000L);
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+//		// Para teste da configuração timeout do @HystrixCommand
+//		 try {
+//		 Thread.sleep(8000L);
+//		 } catch (InterruptedException e) {
+//		 // TODO Auto-generated catch block
+//		 e.printStackTrace();
+//		 }
 
 		return produto;
 
