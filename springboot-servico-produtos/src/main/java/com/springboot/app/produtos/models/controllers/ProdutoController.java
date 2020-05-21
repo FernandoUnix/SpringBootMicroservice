@@ -6,8 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.app.produtos.models.entity.Produto;
@@ -36,7 +40,7 @@ public class ProdutoController {
 
 	@GetMapping("/listar/{id}")
 	public Produto getProduto(@PathVariable Long id) {
-		Produto produto = produtoService.findByid(id);
+		Produto produto = produtoService.findById(id);
 		produto.setPort(Integer.parseInt(env.getProperty("local.server.port")));
 
 //		// Para teste da configuração timeout do @HystrixCommand
@@ -51,4 +55,10 @@ public class ProdutoController {
 
 	}
 
+	@PostMapping("/criar")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Produto criar(@RequestBody Produto produto) {
+		return produtoService.save(produto);
+	}
+	
 }

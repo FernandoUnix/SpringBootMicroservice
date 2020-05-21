@@ -7,5 +7,9 @@ public interface IProdutoService {
 
 	public List<Produto> findAll();
 
-	public Produto findByid(Long id);
+	public Produto findById(Long id);
+
+	public Produto save(Produto produto);
+
+	public void deleteById(Long id);
 }
