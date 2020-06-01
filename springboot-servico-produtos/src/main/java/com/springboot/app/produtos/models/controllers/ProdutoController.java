@@ -2,7 +2,6 @@ package com.springboot.app.produtos.models.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.springboot.app.produtos.models.entity.Produto;
+import com.springboot.service.commons.models.Produto;
 import com.springboot.app.produtos.models.service.IProdutoService;
 
 @RestController
