@@ -27,4 +27,19 @@ public class ItemServiceFeign implements IItemService {
 		Produto produto = clientesRest.getProduto(id);
 		return new Item(produto, quantidade);
 	}
+
+	@Override
+	public Produto save(Produto produto) {
+		return clientesRest.criar(produto);
+	}
+
+	@Override
+	public Produto update(Produto produto, Long id) {
+		return clientesRest.editar(produto, id);
+	}
+
+	@Override
+	public void eliminar(Long id) {
+		clientesRest.eliminar(id);
+	}
 }

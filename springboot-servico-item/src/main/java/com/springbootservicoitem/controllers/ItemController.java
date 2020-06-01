@@ -12,8 +12,13 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.springbootservicoitem.models.Item;
@@ -24,17 +29,16 @@ import com.springbootservicoitem.models.service.IItemService;
 @RefreshScope
 public class ItemController {
 
-	
 	private static Logger log = LoggerFactory.getLogger(ItemController.class);
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Value("${configuracao.texto}")
 	private String texto;
-	
+
 	@Autowired
-	@Qualifier("serviceRestTemplate") // tem duas implementações, @Qualifier defini qual usar
+	@Qualifier("serviceFeign") // tem duas implementações, @Qualifier defini qual usar
 	private IItemService itemService;
 
 	@GetMapping("/listar")
@@ -62,25 +66,41 @@ public class ItemController {
 
 		return item;
 	}
-	
-	
+
 	@GetMapping("/obter-config")
-	public ResponseEntity<?> obterConfig(@Value("${server.port}") String porta){
-		
+	public ResponseEntity<?> obterConfig(@Value("${server.port}") String porta) {
+
 		log.info(texto);
-		
-		Map<String,String> json = new HashMap<String, String>();
+
+		Map<String, String> json = new HashMap<String, String>();
 		json.put("texto", texto);
 		json.put("porta", porta);
-		
-		if(env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("dev")){
-			
+
+		if (env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("dev")) {
+
 			json.put("autor.nome", env.getProperty("configuracao.autor.nome"));
 			json.put("autor.email", env.getProperty("configuracao.autor.email"));
-			
+
 		}
-		
-		return new ResponseEntity<Map<String,String>>(json, HttpStatus.OK);
+
+		return new ResponseEntity<Map<String, String>>(json, HttpStatus.OK);
 	}
-	
+
+	@PostMapping("/criar")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Produto criar(@RequestBody Produto produto) {
+		return itemService.save(produto);
+	}
+
+	@PutMapping("/editar/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Produto editar(@RequestBody Produto produto, @PathVariable Long id) {
+		return itemService.update(produto, id);
+	}
+
+	@DeleteMapping("/eliminar/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void eliminar(@PathVariable Long id) {
+		itemService.eliminar(id);
+	}
 }
