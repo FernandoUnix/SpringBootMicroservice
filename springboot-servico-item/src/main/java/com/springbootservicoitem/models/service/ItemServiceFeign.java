@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import com.springbootservicoitem.clientes.IProdutoClienteRest;
 import com.springbootservicoitem.models.Item;
-import com.springbootservicoitem.models.Produto;
+import com.springboot.service.commons.models.Produto;
 
 @Service("serviceFeign")
 //@Primary usar o primary ou o value no @service

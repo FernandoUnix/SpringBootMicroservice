@@ -3,7 +3,7 @@ package com.springbootservicoitem.models.service;
 import java.util.List;
 
 import com.springbootservicoitem.models.Item;
-import com.springbootservicoitem.models.Produto;
+import com.springboot.service.commons.models.Produto;
 
 public interface IItemService {
 
