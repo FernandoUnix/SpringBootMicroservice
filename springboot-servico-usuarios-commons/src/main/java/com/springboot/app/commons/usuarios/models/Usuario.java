@@ -1,4 +1,4 @@
-package com.springboot.app.usuarios.models.entity;
+package com.springboot.app.commons.usuarios.models;
 
 import java.io.Serializable;
 import java.util.List;
