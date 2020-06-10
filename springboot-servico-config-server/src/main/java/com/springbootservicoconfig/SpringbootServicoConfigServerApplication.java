@@ -11,5 +11,6 @@ public class SpringbootServicoConfigServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootServicoConfigServerApplication.class, args);
 	}
+	
 
 }
