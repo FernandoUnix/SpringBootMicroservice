@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.springboot.app.commons.usuarios.models.Usuario;
 import com.springboot.service.oauth.clientes.IUsuarioFeignClient;
 
+import brave.Tracer;
 import feign.FeignException;
 
 @Service
@@ -25,11 +26,15 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 	@Autowired
 	private IUsuarioFeignClient usuarioFeignCliente;
 
+	@Autowired
+	private Tracer tracer;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		try {
 
+			tracer.currentSpan().tag("nome.busca.usuario",username);
 			Usuario usuario = usuarioFeignCliente.findByUsername(username);
 
 			List<GrantedAuthority> authorities = usuario.getRoles().stream()
@@ -42,7 +47,11 @@ public class UsuarioService implements UserDetailsService, IUsuarioService {
 					authorities);
 
 		} catch (FeignException e) {
-			log.error("Erro ao efetuar login para o usuário: " + username);
+			
+			String error = "Erro ao efetuar login para o usuário: " + username + " | "+e.getMessage();
+			
+			tracer.currentSpan().tag("error.mensagem",error);
+			log.error(error);
 			throw new UsernameNotFoundException("Erro ao efetuar login para o usuário: " + username);
 		}
 	}
